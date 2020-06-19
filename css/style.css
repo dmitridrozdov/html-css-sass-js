@@ -1,0 +1,214 @@
+@import url('https://fonts.googleapis.com/css?family=Ubuntu&display=swap');
+
+body {
+   overflow-x: hidden;
+   background: #1F2739;
+   padding: 2%;
+}
+
+#divmain {
+	font-family: "Ubuntu";
+	font-size: 12px;
+	background: #1F2739;
+	width: 95vw;
+	display: table;
+}
+
+#divth {
+	font-size: 24px;
+	font-weight: normal;
+	color: #039;
+	padding: 10px 8px;
+	#border-bottom: 2px solid #6678b1;
+	text-align: center;
+	width: 50%;
+}
+
+
+.row  {
+  display: table-row;
+}
+
+.cell {
+  display: table-cell;
+}
+
+#headertext
+{
+  font-family: "Ubuntu";
+  font-size: 18px;
+  background: #fff;
+  color: white;
+  width: 480px;
+  text-align: left;
+}
+
+ #hor-minimalist-b
+{
+  font-family: "Ubuntu";
+  font-size: 16px;
+  background: #1F2739;
+  margin: 5px;
+  width: 480px;
+  border-collapse: collapse;
+  text-align: left;
+}
+#hor-minimalist-b th
+{
+  font-family: "Ubuntu";
+  font-size: 16px;
+  font-weight: normal;
+  color: white;
+  padding: 10px 8px;
+  border-bottom: 2px solid #6678b1;
+}
+
+#hor-minimalist-b td
+{
+  font-family: "Ubuntu";
+  font-size: 12px;
+  border-bottom: 1px solid white;
+  color: white;
+  padding: 6px 8px;
+}
+#hor-minimalist-b tbody tr:hover td
+{
+  color: #F60;
+}
+
+.cont-size {
+  margin-top: 20px;
+  width: 100%;
+}
+
+.panel {
+  background: #1F2739;
+  border:  dotted;
+}
+
+.panel-extra {
+  margin: 10px;
+  margin-left: 40px;
+  margin-right: 40px;
+  background: #1F2739;
+  color: white;
+}
+
+.panel-extra:hover {
+  color: #F60;
+}
+
+div a {
+  display:block;
+  width:100%;
+}
+
+failed { color: red; 	font-family: "Ubuntu"; font-size: 14px;}
+passed { color: #71E37B; 	font-family: "Ubuntu"; font-size: 14px;}
+range { color: #b3b300 }
+
+down {
+	margin-right: 5px;
+	color: red
+}
+
+up {
+	margin-right: 5px;
+	color: green
+}
+
+downrange {
+	margin-right: 5px;
+	color: #b3b300
+}
+
+downheader {
+	margin-right: 5px;
+	margin-left: 20px;
+	color: red;
+}
+
+upheader {
+	margin-right: 5px;
+	margin-left: 20px;
+	color: green;
+}
+
+theader {
+	margin-right: 5px;
+	margin-left: 20px;
+}
+
+downrangeheader {
+	margin-right: 5px;
+	margin-left: 20px;
+	color: #b3b300
+}
+
+[tooltip]:before {
+	/* needed - do not touch */
+	content: attr(tooltip);
+	position: absolute;
+	opacity: 0;
+
+	/* customizable */
+	transition: all 0.25s ease;
+	padding: 10px;
+	color: white;
+	border-radius: 4px;
+}
+
+[tooltip]:hover:before {
+	/* needed - do not touch */
+	opacity: 0.8;
+
+	/* customizable */
+	background: #039;
+	margin-top: -40px;
+	margin-left: 0;
+}
+
+[tooltip]:not([tooltip-persistent]):before {
+	pointer-events: none;
+}
+
+.clear:before, .clear:after {
+  content:"";
+  display:table
+}
+
+.clear:after {
+  clear:both
+}
+
+.clear {
+  zoom:1
+}
+
+@import url(https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700);
+
+
+.heading-1 {
+		font-family: 'Ubuntu', serif;
+		font-size: 1.5em;
+		letter-spacing: 0.08em;
+		font-weight: 300;
+		color: #F60;
+
+		text-transform: uppercase;
+}
+
+.divider-1 {
+		border-bottom: 1px solid #FFF;
+		background-color: #DADADA;
+		height: 1px;
+		margin: 0.5em 0px 1.5em;
+}
+
+.divider-1 span {
+		display: block;
+		width: 160px;
+		height: 1px;
+		background-color: #F60;
+}
+

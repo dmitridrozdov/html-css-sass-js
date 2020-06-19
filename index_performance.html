@@ -1,0 +1,673 @@
+<html>
+<head>
+    <title>Performance Portal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+    <script src="https://cdn.anychart.com/releases/8.7.1/js/anychart-core.min.js"></script>
+    <script src="https://cdn.anychart.com/releases/8.7.1/js/anychart-pie.min.js"></script>
+
+   <style>
+      @import url('https://fonts.googleapis.com/css?family=Ubuntu&display=swap');
+      body {
+           overflow-x: hidden;
+       }
+
+      #divmain
+      {
+        font-family: "Ubuntu";
+        font-size: 12px;
+        background: #fff;
+
+        width: 100vw;
+
+        display: table;
+      }
+      #divth
+      {
+        font-size: 24px;
+        font-weight: normal;
+        color: #039;
+        padding: 10px 8px;
+        border-bottom: 2px solid #6678b1;
+        text-align: center;
+        width: 50%;
+      }
+
+
+      .row  {
+          display: table-row;
+        }
+
+        .cell {
+          display: table-cell;
+        }
+
+    #headertext
+    {
+      font-family: "Ubuntu";
+      font-size: 16px;
+      background: #fff;
+      color: #039;
+      width: 480px;
+      text-align: left;
+    }
+
+     #hor-minimalist-b
+    {
+      font-family: "Ubuntu";
+      font-size: 13px;
+      background: #fff;
+      margin: 5px;
+      width: 480px;
+      border-collapse: collapse;
+      text-align: left;
+    }
+    #hor-minimalist-b th
+    {
+      font-size: 14px;
+      font-weight: normal;
+      color: #039;
+      padding: 10px 8px;
+      border-bottom: 2px solid #6678b1;
+    }
+
+    #hor-minimalist-b td
+    {
+      border-bottom: 1px solid #dbe8fc;
+      color: #669;
+      padding: 6px 8px;
+    }
+    #hor-minimalist-b tbody tr:hover td
+    {
+      color: #009;
+    }
+
+    .cont-size {
+      margin-top: 20px;
+      width: 100%;
+    }
+
+    .panel-extra {
+      margin: 10px;
+      margin-left: 40px;
+      background: white;
+      color: #039;
+    }
+
+    .panel-extra:hover {
+      color: orange;
+    }
+
+    div a {
+      display:block;
+      width:100%;
+    }
+
+    failed { color: red }
+    passed { color: green }
+    range { color: #b3b300 }
+
+    down {
+        margin-right: 5px;
+        color: red
+    }
+
+    up {
+        margin-right: 5px;
+        color: green
+    }
+
+    downrange {
+        margin-right: 5px;
+        color: #b3b300
+    }
+
+    downheader {
+        margin-right: 5px;
+        margin-left: 20px;
+        color: red
+    }
+
+    upheader {
+        margin-right: 5px;
+        margin-left: 20px;
+        color: green
+    }
+
+    theader {
+        margin-right: 5px;
+        margin-left: 20px;
+    }
+
+    downrangeheader {
+        margin-right: 5px;
+        margin-left: 20px;
+        color: #b3b300
+    }
+
+    [tooltip]:before {
+        /* needed - do not touch */
+        content: attr(tooltip);
+        position: absolute;
+        opacity: 0;
+
+        /* customizable */
+        transition: all 0.25s ease;
+        padding: 10px;
+        color: white;
+        border-radius: 4px;
+    }
+
+    [tooltip]:hover:before {
+        /* needed - do not touch */
+        opacity: 0.8;
+
+        /* customizable */
+        background: #039;
+        margin-top: -40px;
+        margin-left: 0;
+    }
+
+    [tooltip]:not([tooltip-persistent]):before {
+        pointer-events: none;
+    }
+
+    /* SUMMARY TABLE*/
+    #pricing-table {
+        margin: 20px auto;
+        text-align: center;
+        margin-left: 20px;
+        uwidth: 892px; /* total computed width = 222 x 3 + 226 */
+        uwidth:1000px;
+    }
+
+    #pricing-table .plan {
+        font: 12px "Ubuntu";
+        text-shadow: 0 1px rgba(255,255,255,.8);
+        background: #fff;
+        border: 1px solid #ddd;
+        color: #333;
+        padding: 20px;
+        width: 180px; /* plan width = 180 + 20 + 20 + 1 + 1 = 222px */
+        float: left;
+        position: relative;
+        margin: 3px;
+    }
+
+    #pricing-table #most-popular {
+        z-index: 2;
+        top: -13px;
+        border-width: 3px;
+        padding: 30px 20px;
+        border-radius: 5px;
+        box-shadow: 20px 0 10px -10px rgba(0, 0, 0, .15), -20px 0 10px -10px rgba(0, 0, 0, .15);
+    }
+
+    #pricing-table .plan:nth-child(1) {
+        border-radius: 5px 0 0 5px;
+    }
+
+    #pricing-table .plan:nth-child(4) {
+        border-radius: 0 5px 5px 0;
+    }
+
+    /* --------------- */
+
+    #pricing-table h3 {
+        font-size: 20px;
+        font-weight: normal;
+        padding: 20px;
+        margin: -20px -20px 50px -20px;
+        background-color: #eee;
+        background-image: linear-gradient(#fff, #eee);
+    }
+
+    #pricing-table #most-popular h3 {
+        background-color: #ddd;
+        background-image: linear-gradient(#eee, #ddd);
+        margin-top: -30px;
+        padding-top: 30px;
+        border-radius: 5px 5px 0 0;
+    }
+
+    #pricing-table .plan:nth-child(1) h3 {
+        border-radius: 5px 0 0 0;
+    }
+
+    #pricing-table .plan:nth-child(4) h3 {
+        border-radius: 0 5px 0 0;
+    }
+
+    #pricing-table h3 span {
+        display: block;
+        font: bold 20px/85px "Ubuntu";
+        background: #fff;
+        border: 5px solid #fff;
+        height: 100px;
+        width: 100px;
+        margin: 10px auto -65px;
+        border-radius: 100px;
+        box-shadow: 0 5px 20px #ddd inset, 0 3px 0 #999 inset;
+    }
+
+
+    /* --------------- */
+
+    #pricing-table ul {
+        margin: 20px 0 0 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    #pricing-table li {
+        border-top: 1px solid #ddd;
+        padding: 10px 0;
+    }
+
+    /* --------------- */
+
+    #pricing-table .signup {
+        position: relative;
+        padding: 8px 20px;
+        margin: 20px 0 0 0;
+        color: #fff;
+        font: bold 14px Arial, Helvetica;
+        text-transform: uppercase;
+        text-decoration: none;
+        display: inline-block;
+        background-color: #72ce3f;
+        background-image: linear-gradient(#72ce3f, #62bc30);
+        border-radius: 3px;
+        text-shadow: 0 1px 0 rgba(0,0,0,.3);
+        box-shadow: 0 1px 0 rgba(255, 255, 255, .5), 0 2px 0 rgba(0, 0, 0, .7);
+    }
+
+    #pricing-table .signup:hover {
+        background-color: #62bc30;
+        background-image: linear-gradient(#62bc30, #72ce3f);
+    }
+
+    #pricing-table .signup:active, #pricing-table .signup:focus {
+        background: #62bc30;
+        top: 2px;
+        box-shadow: 0 0 3px rgba(0, 0, 0, .7) inset;
+    }
+
+    /* --------------- */
+
+    .clear:before, .clear:after {
+      content:"";
+      display:table
+    }
+
+    .clear:after {
+      clear:both
+    }
+
+    .clear {
+      zoom:1
+    }
+
+
+    </style>
+</head>
+<body>
+<div id="piechart" style="width: 50%; height: 500px" ></div><p id=headertext style ="margin: 20px">List of reports above acceptable range:</p>
+                       <table id="hor-minimalist-b" style="width: 50%;">
+                          <th>Division</th>
+                          <th>Reports</th>
+                          <th>Report Type</th>
+                          <th>No. of weeks above acceptable range continuously</th>
+                          <th>%</th>
+                       <tr>
+                       <td>Super</td>
+                       <td>Aggregate Rank</td>
+                       <td>MDX</td>
+                       <td>12</td>
+                       <td><down class="fa fa-arrow-down"></down><failed>17.33</failed></td>
+                       </tr>
+                       <tr>
+                       <td>Liquor</td>
+                       <td>Gains and Loss</td>
+                       <td>SQL</td>
+                       <td>2</td>
+                       <td><down class="fa fa-arrow-down"></down><failed>15.55</failed></td>
+                       </tr>
+                       <tr>
+                       <td>Super</td>
+                       <td>Key Driver Tree</td>
+                       <td>SJS</td>
+                       <td>1</td>
+                       <td><down class="fa fa-arrow-down"></down><failed>18.57</failed></td>
+                       </tr>
+                       <tr>
+                       <td>Super</td>
+                       <td>Compare Metrics</td>
+                       <td>MDX</td>
+                       <td>1</td>
+                       <td><down class="fa fa-arrow-down"></down><failed>0.77</failed></td>
+                       </tr>
+                       <tr>
+                       <td>Super</td>
+                       <td>Time of Day Day of Week</td>
+                       <td>MDX</td>
+                       <td>1</td>
+                       <td><down class="fa fa-arrow-down"></down><failed>17.34</failed></td>
+                       </tr>
+                       <tr>
+                       <td>Super</td>
+                       <td>New Product Benchmarking</td>
+                       <td>SQL</td>
+                       <td>1</td>
+                       <td><down class="fa fa-arrow-down"></down><failed>9.16</failed></td>
+                       </tr>
+                       <tr>
+                       <td>Super</td>
+                       <td>Basket Quantities</td>
+                       <td>SQL</td>
+                       <td>1</td>
+                       <td><down class="fa fa-arrow-down"></down><failed>2.53</failed></td>
+                       </tr>
+                       <tr>
+                       <td>Super</td>
+                       <td>Product Substitutability</td>
+                       <td>SQL</td>
+                       <td>1</td>
+                       <td><down class="fa fa-arrow-down"></down><failed>1.04</failed></td>
+                       </tr>
+                       <tr>
+                       <td>Liquor</td>
+                       <td>Key Drivers Over Time</td>
+                       <td>MDX</td>
+                       <td>1</td>
+                       <td><down class="fa fa-arrow-down"></down><failed>12.09</failed></td>
+                       </tr>
+</table>   <div id="runtime" style="width: 100%; height: 400px"></div>
+   <div id="sparkruntime" style="width: 100%; height: 400px; float: left"></div>
+   <div id="mdxruntime" style="width: 100%; height: 400px; float: left"></div>
+
+   <h2><a href="resultTable.html">Detailed results</a></h2>     
+   </div>
+    </body>
+
+<script>
+
+Highcharts.theme = {
+   colors: ['#7cb5ec', '#90ee7e', '#f7a35c', '#7798BF', '#aaeeee', '#ff0066',
+      '#eeaaee', '#55BF3B', '#DF5353', '#7798BF', '#aaeeee'],
+   chart: {
+      backgroundColor: null,
+      style: {
+         fontFamily: "Century Gothic"
+      }
+   },
+   title: {
+      style: {
+         fontSize: '16px',
+         fontWeight: 'bold',
+      }
+   },
+   legend: {
+      itemStyle: {
+         fontWeight: 'bold',
+         fontSize: '13px'
+      }
+   },
+   xAxis: {
+      gridLineWidth: 1,
+      visible: true,
+      labels: {
+         style: {
+            fontSize: '12px'
+         }
+      }
+   },
+   yAxis: {
+      minorTickInterval: 'auto',
+      title: {
+         style: {
+            textTransform: 'uppercase'
+         }
+      },
+      labels: {
+         style: {
+            fontSize: '12px'
+         }
+      }
+   },
+   plotOptions: {
+      candlestick: {
+         lineColor: '#404048'
+      }
+   },
+
+
+   // General
+   background2: '#F0F0EA'
+
+};
+
+// Apply the theme
+Highcharts.setOptions(Highcharts.theme);
+
+
+    Highcharts.chart('runtime', {
+    chart: {
+        type: 'line'
+    },
+    title: {
+        text: 'Overall Runtime vs Benchmark'
+    },
+    subtitle: {
+        text: ''
+    },
+    xAxis: {
+        categories: ['2019-09-15 4.13.5.55740','2019-09-22 4.13.5.55740','2019-09-29 4.13.5.60443','2019-10-06 4.13.5.63057','2019-10-13 4.13.5.63057','2019-10-20 4.13.5.64276','2019-10-27 4.13.5.64276','2019-11-03 4.13.5.64276','2019-11-10 4.13.5.64276','2019-11-17 4.13.5.64276','2019-11-24 4.13.5.64276','2019-12-01 4.13.5.64276','2019-12-08 4.13.5.64276','2019-12-15 4.13.5.64276','2019-12-22 4.13.5.64276','2019-12-29 4.13.5.64276','2020-01-05 4.13.5.64276','2020-01-12 4.13.5.64276','2020-01-19 4.13.5.64276','2020-01-26 4.13.5.64276','2020-02-02 4.13.5.64276','2020-02-09 4.13.5.64276','2020-02-16 4.13.5.64276','2020-02-23 4.13.5.64276','2020-03-01 4.13.5.64276','2020-03-08 4.13.5.64276','2020-03-15 4.13.5.64276','2020-03-22 4.13.5.64276','2020-03-29 4.13.5.64276','2020-04-05 4.13.5.64276','2020-04-12 4.13.5.64276','2020-04-19 4.13.5.64276','2020-04-26 4.13.5.64276','2020-05-03 4.13.5.64276','2020-05-10 4.13.5.64276','2020-05-17 4.13.5.64276','2020-05-24 4.13.5.64276']
+    },
+    yAxis: {
+        title: {
+            text: 'Run time'
+        },
+        labels: {
+            format: '{value} min'
+        }
+    },
+    plotOptions: {
+        column: {
+            stacking: 'normal',
+            dataLabels: {
+                enabled: true,
+                format: '{point.y:.2f}%',
+                color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
+            }
+        }
+    },
+    series: [{
+        name: 'Runtime',
+        type: 'spline',
+        data: [355,329,318,309,333,327,317,351,314,334,336,339,320,335,324,397,323,299,398,331,332,320,373,383,344,348,372,583,390,317,330,403,379,329,330,354,327],
+        tooltip: {
+            valueSuffix: ' min'
+        }
+    }, {
+        name: 'Benchmark',
+        type: 'spline',
+        data: [360,360,360,360,360,360,360,360,360,360,360,360,360,360,360,360,360,360,360,360,360,360,360,360,360,360,360,360,360,360,360,360,360,360,360,360,360],
+        tooltip: {
+            valueSuffix: ' min'
+        }
+    }, {
+        name: 'Acceptable range',
+        type: 'spline',
+        data: [397,397,397,397,397,397,397,397,397,397,397,397,397,397,397,397,397,397,397,397,397,397,397,397,397,397,397,397,397,397,397,397,397,397,397,397,397],
+        tooltip: {
+            valueSuffix: ' min'
+        }
+    }]
+});
+
+
+    Highcharts.chart('sparkruntime', {
+    chart: {
+        type: 'line'
+    },
+    title: {
+        text: 'Overall Spark Reports Runtime vs Benchmark'
+    },
+    subtitle: {
+        text: ''
+    },
+    xAxis: {
+        categories: ['2019-09-15 4.13.5.55740','2019-09-22 4.13.5.55740','2019-09-29 4.13.5.60443','2019-10-06 4.13.5.63057','2019-10-13 4.13.5.63057','2019-10-20 4.13.5.64276','2019-10-27 4.13.5.64276','2019-11-03 4.13.5.64276','2019-11-10 4.13.5.64276','2019-11-17 4.13.5.64276','2019-11-24 4.13.5.64276','2019-12-01 4.13.5.64276','2019-12-08 4.13.5.64276','2019-12-15 4.13.5.64276','2019-12-22 4.13.5.64276','2019-12-29 4.13.5.64276','2020-01-05 4.13.5.64276','2020-01-12 4.13.5.64276','2020-01-19 4.13.5.64276','2020-01-26 4.13.5.64276','2020-02-02 4.13.5.64276','2020-02-09 4.13.5.64276','2020-02-16 4.13.5.64276','2020-02-23 4.13.5.64276','2020-03-01 4.13.5.64276','2020-03-08 4.13.5.64276','2020-03-15 4.13.5.64276','2020-03-22 4.13.5.64276','2020-03-29 4.13.5.64276','2020-04-05 4.13.5.64276','2020-04-12 4.13.5.64276','2020-04-19 4.13.5.64276','2020-04-26 4.13.5.64276','2020-05-03 4.13.5.64276','2020-05-10 4.13.5.64276','2020-05-17 4.13.5.64276','2020-05-24 4.13.5.64276']
+    },
+    yAxis: {
+        title: {
+            text: 'Run time'
+        },
+        labels: {
+            format: '{value} min'
+        }
+    },
+    plotOptions: {
+        column: {
+            stacking: 'normal',
+            dataLabels: {
+                enabled: true,
+                format: '{point.y:.2f}%',
+                color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
+            }
+        }
+    },
+    series: [{
+        name: 'Runtime',
+        type: 'spline',
+        data: [26,31,27,24,26,38,29,26,29,24,25,28,27,29,26,27,26,26,27,28,33,29,27,38,29,33,30,28,37,31,29,25,0,27,28,26,31],
+        tooltip: {
+            valueSuffix: ' min'
+        }
+    }, {
+        name: 'Benchmark',
+        type: 'spline',
+        data: [33,33,33,33,33,33,33,33,33,33,33,33,26,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,31,33,31,33,0,33,33,33,33],
+        tooltip: {
+            valueSuffix: ' min'
+        }
+    }, {
+        name: 'Acceptable range',
+        type: 'spline',
+        data: [38,38,38,38,38,38,38,38,38,38,38,38,30,38,38,38,38,38,38,38,38,38,38,38,38,38,38,38,35,38,35,38,0,38,38,38,38],
+        tooltip: {
+            valueSuffix: ' min'
+        }
+    }]
+});
+
+
+    Highcharts.chart('mdxruntime', {
+    chart: {
+        type: 'line'
+    },
+    title: {
+        text: 'Overall MDX/SQL Reports Runtime vs Benchmark'
+    },
+    subtitle: {
+        text: ''
+    },
+    xAxis: {
+        categories: ['2019-09-15 4.13.5.55740','2019-09-22 4.13.5.55740','2019-09-29 4.13.5.60443','2019-10-06 4.13.5.63057','2019-10-13 4.13.5.63057','2019-10-20 4.13.5.64276','2019-10-27 4.13.5.64276','2019-11-03 4.13.5.64276','2019-11-10 4.13.5.64276','2019-11-17 4.13.5.64276','2019-11-24 4.13.5.64276','2019-12-01 4.13.5.64276','2019-12-08 4.13.5.64276','2019-12-15 4.13.5.64276','2019-12-22 4.13.5.64276','2019-12-29 4.13.5.64276','2020-01-05 4.13.5.64276','2020-01-12 4.13.5.64276','2020-01-19 4.13.5.64276','2020-01-26 4.13.5.64276','2020-02-02 4.13.5.64276','2020-02-09 4.13.5.64276','2020-02-16 4.13.5.64276','2020-02-23 4.13.5.64276','2020-03-01 4.13.5.64276','2020-03-08 4.13.5.64276','2020-03-15 4.13.5.64276','2020-03-22 4.13.5.64276','2020-03-29 4.13.5.64276','2020-04-05 4.13.5.64276','2020-04-12 4.13.5.64276','2020-04-19 4.13.5.64276','2020-04-26 4.13.5.64276','2020-05-03 4.13.5.64276','2020-05-10 4.13.5.64276','2020-05-17 4.13.5.64276','2020-05-24 4.13.5.64276']
+    },
+    yAxis: {
+        title: {
+            text: 'Run time'
+        },
+        labels: {
+            format: '{value} min'
+        }
+    },
+    plotOptions: {
+        column: {
+            stacking: 'normal',
+            dataLabels: {
+                enabled: true,
+                format: '{point.y:.2f}%',
+                color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
+            }
+        }
+    },
+    series: [{
+        name: 'Runtime',
+        type: 'spline',
+        data: [328,298,291,284,306,289,288,324,285,309,311,310,293,306,298,370,297,273,371,303,299,291,346,344,315,314,342,554,352,286,300,377,379,301,301,328,295],
+        tooltip: {
+            valueSuffix: ' min'
+        }
+    }, {
+        name: 'Benchmark',
+        type: 'spline',
+        data: [326,326,326,326,326,326,326,326,326,326,326,326,333,326,326,326,326,326,326,326,326,326,326,326,326,326,326,326,328,326,328,326,360,326,326,326,326],
+        tooltip: {
+            valueSuffix: ' min'
+        }
+    }, {
+        name: 'Acceptable range',
+        type: 'spline',
+        data: [359,359,359,359,359,359,359,359,359,359,359,359,367,359,359,359,359,359,359,359,359,359,359,359,359,359,359,359,361,359,361,359,397,359,359,359,359],
+        tooltip: {
+            valueSuffix: ' min'
+        }
+    }]
+});
+
+</script><script>
+    anychart.onDocumentReady(function () {
+        var chart = anychart.pie([
+          {x: "Below Benchmark", value: 20,
+      normal:  {
+        fill: "#90ee7e",
+      }
+      },
+          {x: "Within Acceptable range", value: 8,
+        normal:  {
+          fill: "#CFFAC7",
+        }
+      },
+          {x: "Above Acceptable range", value: 9,
+        normal:  {
+          fill: "#FEC98D",
+        }
+      },
+          {x: "Failed", value: 0,
+        normal:  {
+          fill: "#FF3F3F",
+        }
+      }
+        ]);
+
+        chart.innerRadius("70%");
+
+        var label = anychart.standalones.label();
+        label.text("Total generated reports: 37");
+        label.width("100%");
+        label.height("100%");
+        label.adjustFontSize(true);
+        label.fontColor("#000000");
+        label.hAlign("center");
+        label.vAlign("middle");
+
+        // set the label as the center content
+        chart.center().content(label);
+
+        chart.labels().position("outside");
+
+        chart.container("piechart");
+        chart.draw();
+      });
+</script>
+
+</html>
